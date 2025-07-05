@@ -5,7 +5,7 @@ interface MenuPageProps {
   onNavigate: (page: string) => void;
 }
 
-const MenuPage: React.FC<MenuPageProps> = ({ onBack, onNavigate }) => {
+const MenuPage: React.FC<MenuPageProps> = ({ onNavigate }) => {
   return (
     <>
       <div className="min-h-screen relative overflow-hidden">
@@ -70,11 +70,16 @@ const MenuPage: React.FC<MenuPageProps> = ({ onBack, onNavigate }) => {
             {/* Capture Moment section */}
             <div className="mt-12 text-center max-w-sm">
               <div className="relative inline-block">
-                <img
-                  src="/moment1.png"
-                  alt="Let This Book Be Your Public Space"
-                  className="w-80 h-[209px] mx-auto"
-                />
+                <button
+                  onClick={() => onNavigate("capture-moment")}
+                  className="block w-full hover:opacity-80 transition-opacity"
+                >
+                  <img
+                    src="/moment1.png"
+                    alt="Let This Book Be Your Public Space"
+                    className="w-80 h-[209px] mx-auto"
+                  />
+                </button>
               </div>
             </div>
 

@@ -9,7 +9,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   onBack,
-  title,
+
   showBackButton = true,
 }) => {
   const navigate = useNavigate();

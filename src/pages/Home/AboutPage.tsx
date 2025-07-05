@@ -4,7 +4,7 @@ interface AboutPageProps {
   onBack: () => void;
 }
 
-const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
+const AboutPage: React.FC<AboutPageProps> = ({}) => {
   return (
     <>
       <div className="relative ">
