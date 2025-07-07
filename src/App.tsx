@@ -11,10 +11,14 @@ import AboutPage from "../src/pages/Home/AboutPage";
 import DefaultLayout from "../src/layout/DefaultLayout";
 import CaptureMomentPage from "./pages/Home/CaptureMomentPage";
 import CharacterSelectionPage from "./pages/Home/CharacterSelectionPage";
+import CameraPage from "./pages/Home/CameraPage";
+import PhotoPreviewPage from "./pages/Home/PhotoPreviewPage";
 
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
   const [selectedCharacter, setSelectedCharacter] = useState<string>("");
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const [capturedImage, setCapturedImage] = useState<string>("");
 
   const handleNavigateToHome = () => {
     navigate("/");
@@ -31,6 +35,29 @@ const AppContent: React.FC = () => {
   const handleCharacterSelect = (character: string) => {
     setSelectedCharacter(character);
     navigate("/capture-moment");
+  };
+
+  const handleLocationSelect = (location: string) => {
+    setSelectedLocation(location);
+    navigate("/camera");
+  };
+
+  const handlePhotoCapture = (imageData: string) => {
+    setCapturedImage(imageData);
+    navigate("/photo-preview");
+  };
+
+  const handlePhotoSave = (caption: string, mapLink: string) => {
+    // Here you would typically save the photo data to your backend
+    console.log("Saving photo with:", {
+      character: selectedCharacter,
+      location: selectedLocation,
+      image: capturedImage,
+      caption,
+      mapLink,
+    });
+    alert("Photo saved successfully!");
+    navigate("/menu");
   };
 
   const handleBackToMenu = () => {
@@ -90,6 +117,40 @@ const AppContent: React.FC = () => {
             <CaptureMomentPage
               onBack={() => navigate("/character-selection")}
               selectedCharacter={selectedCharacter}
+              onLocationSelect={handleLocationSelect}
+            />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/camera"
+        element={
+          <DefaultLayout
+            headerTitle="Take Your Photo"
+            onBack={() => navigate("/capture-moment")}
+          >
+            <CameraPage
+              onBack={() => navigate("/capture-moment")}
+              selectedCharacter={selectedCharacter}
+              selectedLocation={selectedLocation}
+              onPhotoCapture={handlePhotoCapture}
+            />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/photo-preview"
+        element={
+          <DefaultLayout
+            headerTitle="Photo Preview"
+            onBack={() => navigate("/camera")}
+          >
+            <PhotoPreviewPage
+              onBack={() => navigate("/camera")}
+              selectedCharacter={selectedCharacter}
+              selectedLocation={selectedLocation}
+              capturedImage={capturedImage}
+              onSave={handlePhotoSave}
             />
           </DefaultLayout>
         }

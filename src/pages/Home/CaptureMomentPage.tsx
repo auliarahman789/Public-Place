@@ -3,10 +3,12 @@ import React from "react";
 interface CaptureMomentPageProps {
   onBack: () => void;
   selectedCharacter: string;
+  onLocationSelect: (location: string) => void;
 }
 
 const CaptureMomentPage: React.FC<CaptureMomentPageProps> = ({
   selectedCharacter,
+  onLocationSelect,
 }) => {
   const characterLabels: { [key: string]: string } = {
     "content-creator": "A Content Creator",
@@ -40,10 +42,14 @@ const CaptureMomentPage: React.FC<CaptureMomentPageProps> = ({
   const characterLabel =
     characterLabels[selectedCharacter] || "Unknown Character";
 
+  const handleLocationClick = (locationName: string) => {
+    onLocationSelect(locationName);
+  };
+
   return (
     <div className="min-h-screen relative overflow-hidden font-bookmania bg-[#DAD5D2]">
       {/* Main content with bgdot.jpg background */}
-      <div className="flex-1 min-h-[calc(100vh-56px)] bg-[#DAD5D2]  mb-20">
+      <div className="flex-1 min-h-[calc(100vh-56px)] bg-[#DAD5D2] mb-20">
         <div className="w-full max-w-sm mx-auto px-6 py-8 font-bookmania">
           {/* Header */}
           <div className="text-center mb-8">
@@ -58,9 +64,10 @@ const CaptureMomentPage: React.FC<CaptureMomentPageProps> = ({
             {locations.map((location) => (
               <button
                 key={location.id}
-                className="bg-[#DAD5D2]  hover:border-green-600 transition-colors"
+                onClick={() => handleLocationClick(location.name)}
+                className="bg-[#DAD5D2] hover:border-green-600 transition-colors"
               >
-                <div className="aspect-square mb-2   bg-gray-100 flex items-center justify-center">
+                <div className="aspect-square mb-2 bg-gray-100 flex items-center justify-center">
                   <img
                     src={location.image}
                     alt={location.name}

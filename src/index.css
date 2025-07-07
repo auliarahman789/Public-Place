@@ -1,5 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Bookmania&display=swap")
-layer(base);
+@font-face {
+  font-family: "Bookmania";
+  src: url("/Fonts/Bookmania-Light.woff2") format("woff2"),
+    url("/Fonts/Bookmania-Light.woff") format("woff"),
+    url("/Fonts/Bookmania-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Bookmania";
+  src: url("/Fonts/Bookmania-Regular.woff2") format("woff2"),
+    url("/Fonts/Bookmania-Regular.woff") format("woff"),
+    url("/Fonts/Bookmania-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 @import "tailwindcss";
 
@@ -187,7 +204,7 @@ layer(base);
     cursor: pointer;
   }
   body {
-    @apply relative font-normal font-outfit z-1 bg-gray-50;
+    @apply relative font-bookmania font-medium z-1 bg-gray-50;
   }
 }
 
@@ -252,15 +269,11 @@ layer(base);
 @utility menu-dropdown-badge-active {
   @apply bg-brand-100 dark:bg-brand-500/20;
 }
-@layer base {
-  /* ... other styles ... */
-  body {
-    @apply relative font-normal font-bookmania z-1 bg-gray-50; /* Change font-outfit to font-bookmania */
-  }
-}
+
 @utility menu-dropdown-badge-inactive {
   @apply bg-brand-50 group-hover:bg-brand-100 dark:bg-brand-500/15 dark:group-hover:bg-brand-500/20;
 }
+
 @utility no-scrollbar {
   /* Chrome, Safari and Opera */
   &::-webkit-scrollbar {
@@ -269,6 +282,7 @@ layer(base);
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
 @utility custom-scrollbar {
   &::-webkit-scrollbar {
     @apply size-1.5;
@@ -282,6 +296,7 @@ layer(base);
     @apply bg-gray-200 rounded-full dark:bg-gray-700;
   }
 }
+
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: #344054;
 }
