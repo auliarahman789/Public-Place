@@ -13,6 +13,8 @@ const CameraPage: React.FC<CameraPageProps> = ({
   onPhotoCapture,
 }) => {
   const [isVideoActive, setIsVideoActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>("");
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -30,18 +32,79 @@ const CameraPage: React.FC<CameraPageProps> = ({
     characterLabels[selectedCharacter] || "Unknown Character";
 
   const startCamera = async () => {
+    setIsLoading(true);
+    setError("");
+
     try {
+      console.log("Requesting camera access...");
+
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" }, // Use back camera on mobile
+        video: {
+          facingMode: "environment",
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+        },
       });
+
+      console.log("Camera stream obtained:", stream);
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        setIsVideoActive(true);
+
+        // Multiple event listeners to ensure video starts
+        videoRef.current.onloadedmetadata = async () => {
+          console.log("Video metadata loaded");
+          try {
+            await videoRef.current?.play();
+            console.log("Video playing");
+            setIsVideoActive(true);
+            setIsLoading(false);
+          } catch (playError) {
+            console.error("Error playing video:", playError);
+            setError("Failed to start video playback");
+            setIsLoading(false);
+          }
+        };
+
+        videoRef.current.onloadeddata = () => {
+          console.log("Video data loaded");
+        };
+
+        videoRef.current.oncanplay = () => {
+          console.log("Video can play");
+        };
+
+        videoRef.current.onerror = (e) => {
+          console.error("Video error:", e);
+          setError("Video playback error");
+          setIsLoading(false);
+        };
+
+        // Fallback: Try to play immediately
+        setTimeout(async () => {
+          try {
+            await videoRef.current?.play();
+            setIsVideoActive(true);
+            setIsLoading(false);
+          } catch (e) {
+            console.log("Fallback play failed:", e);
+          }
+        }, 100);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error accessing camera:", error);
-      alert("Unable to access camera. Please check permissions.");
+      setError(`Camera error: ${error.message}`);
+      setIsLoading(false);
     }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+    }
+    setIsVideoActive(false);
   };
 
   const capturePhoto = () => {
@@ -58,11 +121,7 @@ const CameraPage: React.FC<CameraPageProps> = ({
         const imageData = canvas.toDataURL("image/jpeg");
 
         // Stop the video stream
-        const stream = video.srcObject as MediaStream;
-        if (stream) {
-          stream.getTracks().forEach((track) => track.stop());
-        }
-        setIsVideoActive(false);
+        stopCamera();
 
         // Navigate to preview page
         onPhotoCapture(imageData);
@@ -118,7 +177,9 @@ const CameraPage: React.FC<CameraPageProps> = ({
                     ref={videoRef}
                     autoPlay
                     playsInline
+                    muted
                     className="w-full h-64 object-cover rounded-lg border-2 border-gray-300"
+                    style={{ transform: "scaleX(-1)" }} // Mirror for selfie effect
                   />
                   <button
                     onClick={capturePhoto}
@@ -126,12 +187,35 @@ const CameraPage: React.FC<CameraPageProps> = ({
                   >
                     <div className="w-8 h-8 bg-green-600 rounded-full"></div>
                   </button>
+                  <button
+                    onClick={stopCamera}
+                    className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded text-sm"
+                  >
+                    Stop
+                  </button>
                 </div>
               ) : (
                 <div className="w-full h-64 bg-gray-200 rounded-lg border-2 border-gray-300 flex items-center justify-center">
-                  <p className="text-gray-500 text-center">
-                    Camera preview will appear here
-                  </p>
+                  {isLoading ? (
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-2"></div>
+                      <p className="text-gray-500">Starting camera...</p>
+                    </div>
+                  ) : error ? (
+                    <div className="text-center">
+                      <p className="text-red-500 text-sm mb-2">{error}</p>
+                      <button
+                        onClick={startCamera}
+                        className="text-blue-600 underline text-sm"
+                      >
+                        Try Again
+                      </button>
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 text-center">
+                      Camera preview will appear here
+                    </p>
+                  )}
                 </div>
               )}
             </div>
@@ -156,7 +240,8 @@ const CameraPage: React.FC<CameraPageProps> = ({
 
             <button
               onClick={startCamera}
-              className="w-full bg-white border-3 border-green-600 font-semibold py-4 px-6 text-[24px] hover:bg-green-50 transition-colors"
+              disabled={isLoading}
+              className="w-full bg-white border-3 border-green-600 font-semibold py-4 px-6 text-[24px] hover:bg-green-50 transition-colors disabled:opacity-50"
             >
               <span
                 className="text-[#F9A574]"
@@ -165,7 +250,7 @@ const CameraPage: React.FC<CameraPageProps> = ({
                     "0.5px 0.5px 0 #666, -0.5px -0.5px 0 #666, 0.5px -0.5px 0 #666, -0.5px 0.5px 0 #666",
                 }}
               >
-                OPEN CAMERA
+                {isLoading ? "STARTING..." : "OPEN CAMERA"}
               </span>
             </button>
           </div>
