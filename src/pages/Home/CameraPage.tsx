@@ -7,23 +7,7 @@ interface CameraPageProps {
   onPhotoCapture: (imageData: string) => void;
 }
 
-const CameraPage: React.FC<CameraPageProps> = ({
-  selectedCharacter,
-  selectedLocation,
-  onPhotoCapture,
-}) => {
-  const characterLabels: { [key: string]: string } = {
-    "content-creator": "A Content Creator",
-    daddy: "A Daddy",
-    dj: "A DJ",
-    "sporty-person": "A Sporty Person",
-    artist: "An Artist",
-    entity: "An Entity",
-  };
-
-  const characterLabel =
-    characterLabels[selectedCharacter] || "Unknown Character";
-
+const CameraPage: React.FC<CameraPageProps> = ({ onPhotoCapture }) => {
   const selectFromGallery = () => {
     const input = document.createElement("input");
     input.type = "file";
