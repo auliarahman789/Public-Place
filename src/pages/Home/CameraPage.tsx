@@ -41,55 +41,33 @@ const CameraPage: React.FC<CameraPageProps> = ({
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "environment",
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
+          width: { min: 640, ideal: 1280 },
+          height: { min: 480, ideal: 720 },
         },
       });
 
       console.log("Camera stream obtained:", stream);
+      console.log("Stream tracks:", stream.getTracks());
 
       if (videoRef.current) {
+        // Set the stream
         videoRef.current.srcObject = stream;
 
-        // Multiple event listeners to ensure video starts
-        videoRef.current.onloadedmetadata = async () => {
-          console.log("Video metadata loaded");
-          try {
-            await videoRef.current?.play();
-            console.log("Video playing");
-            setIsVideoActive(true);
-            setIsLoading(false);
-          } catch (playError) {
-            console.error("Error playing video:", playError);
-            setError("Failed to start video playback");
-            setIsLoading(false);
-          }
-        };
+        // Force the video to show immediately
+        setIsVideoActive(true);
+        setIsLoading(false);
 
-        videoRef.current.onloadeddata = () => {
-          console.log("Video data loaded");
-        };
-
-        videoRef.current.oncanplay = () => {
-          console.log("Video can play");
-        };
-
-        videoRef.current.onerror = (e) => {
-          console.error("Video error:", e);
-          setError("Video playback error");
-          setIsLoading(false);
-        };
-
-        // Fallback: Try to play immediately
-        setTimeout(async () => {
-          try {
-            await videoRef.current?.play();
-            setIsVideoActive(true);
-            setIsLoading(false);
-          } catch (e) {
-            console.log("Fallback play failed:", e);
-          }
-        }, 100);
+        // Try to play the video
+        try {
+          await videoRef.current.play();
+          console.log("Video started playing");
+        } catch (playError) {
+          console.warn(
+            "Auto-play failed, but video should still work:",
+            playError
+          );
+          // Don't treat this as an error - video might still work
+        }
       }
     } catch (error: any) {
       console.error("Error accessing camera:", error);
@@ -179,7 +157,20 @@ const CameraPage: React.FC<CameraPageProps> = ({
                     playsInline
                     muted
                     className="w-full h-64 object-cover rounded-lg border-2 border-gray-300"
-                    style={{ transform: "scaleX(-1)" }} // Mirror for selfie effect
+                    onLoadedMetadata={() => {
+                      console.log(
+                        "Video metadata loaded, dimensions:",
+                        videoRef.current?.videoWidth,
+                        "x",
+                        videoRef.current?.videoHeight
+                      );
+                    }}
+                    onCanPlay={() => {
+                      console.log("Video can play");
+                    }}
+                    onPlay={() => {
+                      console.log("Video started playing");
+                    }}
                   />
                   <button
                     onClick={capturePhoto}
