@@ -16,9 +16,17 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
   const [mapLink, setMapLink] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
+  // Check if form is complete
+  const isFormComplete =
+    caption.trim() !== "" && mapLink.trim() !== "" && agreedToTerms;
+
   const handleSave = () => {
     if (!agreedToTerms) {
       alert("Please agree to the terms and conditions");
+      return;
+    }
+    if (!caption.trim() || !mapLink.trim()) {
+      alert("Please fill in all fields");
       return;
     }
     onSave(caption, mapLink);
@@ -38,7 +46,7 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
 
           {/* Photo Preview */}
           <div className="mb-6">
-            <div className="bg-white p-4 rounded-lg border-2 border-gray-300">
+            <div className="bg-white border-4 border-black">
               <img
                 src={capturedImage}
                 alt="Captured moment"
@@ -53,7 +61,9 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               placeholder="Add a caption..."
-              className="w-full p-3 border-2 border-gray-300 rounded-lg text-[16px] font-bookmania resize-none h-20"
+              className={`w-full p-3 border-4 text-[16px] font-bookmania resize-none h-20 ${
+                isFormComplete ? "border-green-500" : "border-black"
+              }`}
               maxLength={200}
             />
           </div>
@@ -66,7 +76,9 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
                 value={mapLink}
                 onChange={(e) => setMapLink(e.target.value)}
                 placeholder="Paste your pin point from maps here"
-                className="w-full p-3 border-2 border-gray-300 rounded-lg text-[16px] font-bookmania pl-10"
+                className={`w-full p-3 border-4 text-[16px] font-bookmania pl-10 ${
+                  isFormComplete ? "border-green-500" : "border-black"
+                }`}
               />
               <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
                 <svg
@@ -99,30 +111,24 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
               <span>
                 By checking this button, you are agree for our{" "}
                 <a href="#" className="text-blue-600 underline">
-                  Terms and Conditions
+                  Terms and Agreement
                 </a>
               </span>
             </label>
           </div>
 
           {/* Save Button */}
-          <div className="mb-4">
-            <button
-              onClick={handleSave}
-              disabled={!agreedToTerms}
-              className={`w-full font-semibold py-3 px-6 text-[20px] rounded-full transition-colors ${
-                agreedToTerms
-                  ? "bg-[#F9A574] text-white hover:bg-[#f39c5a]"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          <div className="mb-4 flex justify-center mt-10">
+            <img
+              src={isFormComplete ? "/shareon.png" : "/shareoff.png"}
+              alt="Share button"
+              onClick={isFormComplete ? handleSave : undefined}
+              className={`w-[150px] h-[60px] cursor-pointer transition-opacity ${
+                isFormComplete
+                  ? "cursor-pointer hover:opacity-80"
+                  : "cursor-not-allowed opacity-60"
               }`}
-            >
-              SAVE
-            </button>
-          </div>
-
-          {/* Footer */}
-          <div className="text-center text-sm text-gray-500 mt-8">
-            <p>Let This Book Be Your Public Space 2025</p>
+            />
           </div>
         </div>
       </div>
