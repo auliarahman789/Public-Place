@@ -29,7 +29,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ onNavigate }) => {
                   className="text-[#F9A574]"
                   style={{
                     textShadow:
-                      "0.5px 0.5px 0 #666, -0.5px -0.5px 0 #666, 0.5px -0.5px 0 #666, -0.5px 0.5px 0 #666",
+                      "1px 1px 0 #666, -1px -1px 0 #666, 1px -1px 0 #666, -1px 1px 0 #666",
                   }}
                 >
                   ABOUT
@@ -44,7 +44,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ onNavigate }) => {
                   className="text-[#F9A574]"
                   style={{
                     textShadow:
-                      "0.5px 0.5px 0 #666, -0.5px -0.5px 0 #666, 0.5px -0.5px 0 #666, -0.5px 0.5px 0 #666",
+                      "1px 1px 0 #666, -1px -1px 0 #666, 1px -1px 0 #666, -1px 1px 0 #666",
                   }}
                 >
                   GALLERY
@@ -59,7 +59,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ onNavigate }) => {
                   className="text-[#F9A574]"
                   style={{
                     textShadow:
-                      "0.5px 0.5px 0 #666, -0.5px -0.5px 0 #666, 0.5px -0.5px 0 #666, -0.5px 0.5px 0 #666",
+                      "1px 1px 0 #666, -1px -1px 0 #666, 1px -1px 0 #666, -1px 1px 0 #666",
                   }}
                 >
                   SEE THE BOOK

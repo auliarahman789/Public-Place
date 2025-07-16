@@ -1,14 +1,38 @@
-@import url("https://fonts.googleapis.com/css2?family=Bookmania&display=swap")
-layer(base);
+/* @import url("https://fonts.googleapis.com/css2?family=Bookmania&display=swap")
+layer(base); */
 
 @import "tailwindcss";
+@font-face {
+  font-family: "Bookmania";
+  src: url("/Fonts/Bookmania-Light.otf") format("opentype"),
+    url("/Fonts/Bookmania-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
 
+/* @font-face {
+  font-family: "Bookmania";
+  src: url("/Fonts/Bookmania-Regular.otf") format("opentype"),
+    url("/Fonts/Bookmania-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+} */
 @custom-variant dark (&:is(.dark *));
 
 @theme {
   --font-*: initial;
   --font-bookmania: Bookmania, serif;
   --font-outfit: Outfit, sans-serif;
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
 
   --breakpoint-*: initial;
   --breakpoint-2xsm: 375px;
