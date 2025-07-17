@@ -27,24 +27,25 @@ const HomePage: React.FC = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        backgroundColor: "#60a5fa", // Fallback blue color
       }}
     >
-      {/* Main content container - mobile-first with fixed width */}
-      <div className="w-full mx-auto px-6 relative z-10">
+      {/* Main content container - responsive sizing */}
+      <div className="w-full max-w-md md:max-w-2xl lg:max-w-4xl mx-auto px-6 relative z-10">
         {/* Main text content */}
-        <div className="text-center mb-12">
-          <div className="mb-8">
+        <div className="text-center mb-8 md:mb-12">
+          <div className="mb-6 md:mb-8">
             <img
               src="/text depan.png"
               alt="Let This Book Be Your Public Space"
-              className="w-full mx-auto"
+              className="w-full mx-auto max-w-sm md:max-w-xs lg:max-w-sm"
             />
           </div>
 
           {/* Call to action button */}
           <button
             onClick={handleStartExploring}
-            className="text-black font-semibold text-lg underline hover:no-underline transition-all duration-300 hover:scale-105 active:scale-95"
+            className="text-black font-semibold text-lg md:text-xl underline hover:no-underline transition-all duration-300 hover:scale-105 active:scale-95"
           >
             Start Exploring
           </button>

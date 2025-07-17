@@ -8,6 +8,7 @@ import {
 import HomePage from "../src/pages/Home/HomePage";
 import MenuPage from "../src/pages/Home/MenuPage";
 import AboutPage from "../src/pages/Home/AboutPage";
+import BookPage from "../src/pages/Home/BookPage"; // Add this import
 import DefaultLayout from "../src/layout/DefaultLayout";
 import CaptureMomentPage from "./pages/Home/CaptureMomentPage";
 import CharacterSelectionPage from "./pages/Home/CharacterSelectionPage";
@@ -208,6 +209,14 @@ const AppContent: React.FC = () => {
         element={
           <DefaultLayout headerTitle="ABOUT" onBack={handleBackToMenu}>
             <AboutPage onBack={handleBackToMenu} />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/book"
+        element={
+          <DefaultLayout headerTitle="SEE THE BOOK" onBack={handleBackToMenu}>
+            <BookPage onBack={handleBackToMenu} />
           </DefaultLayout>
         }
       />

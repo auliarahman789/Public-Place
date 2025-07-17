@@ -23,12 +23,12 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoadingComplete }) => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="w-full  mx-auto  relative z-10">
-        <div className="text-end">
+      <div className="w-full max-w-md mx-auto relative z-10">
+        <div className="text-center">
           <img
             src="/Doa 1.png"
             alt="Prayer content"
-            className="w-full  mx-auto"
+            className="w-full mx-auto max-w-sm md:max-w-xs lg:max-w-sm"
           />
         </div>
       </div>
