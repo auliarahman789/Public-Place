@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface PhotoPreviewPageProps {
   onBack: () => void;
@@ -6,15 +6,40 @@ interface PhotoPreviewPageProps {
   selectedLocation: string;
   capturedImage: string;
   onSave: (caption: string, mapLink: string) => void;
+  onNavigateToCharacterSelection: () => void;
 }
 
 const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
   capturedImage,
+  selectedCharacter,
+  selectedLocation,
   onSave,
+  onNavigateToCharacterSelection,
 }) => {
   const [caption, setCaption] = useState("");
   const [mapLink, setMapLink] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+
+  // Use ref to track if we've already shown the alert
+  const hasShownAlert = useRef(false);
+
+  // Check if required data is present on component mount
+  useEffect(() => {
+    if (!selectedCharacter || !selectedLocation || !capturedImage) {
+      if (!hasShownAlert.current) {
+        hasShownAlert.current = true;
+        alert(
+          "Missing Character, Location, or Image. Please start from character selection."
+        );
+        onNavigateToCharacterSelection();
+      }
+    }
+  }, [
+    selectedCharacter,
+    selectedLocation,
+    capturedImage,
+    onNavigateToCharacterSelection,
+  ]);
 
   // Check if form is complete
   const isFormComplete =
@@ -32,31 +57,40 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
     onSave(caption, mapLink);
   };
 
+  const handleTermsClick = () => {
+    window.open("/termsandcondition", "_blank");
+  };
+
+  // Don't render if required data is missing
+  if (!selectedCharacter || !selectedLocation || !capturedImage) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden font-bookmania">
       {/* Main content with bgdot.jpg background */}
       <div className="w-full max-w-lg mx-auto font-bookmania">
-        <div className="px-[4%] py-[8%] bg-[#DAD5D2] min-h-screen flex flex-col ">
+        <div className="px-6 py-8 bg-[#DAD5D2] min-h-screen flex flex-col">
           {/* Header */}
-          <div className="text-center mb-6">
-            <h1 className="text-[32px] font-bold text-black mb-2">
+          <div className="text-center mb-8">
+            <h1 className="text-[28px] font-extrabold text-black mb-2">
               Looking Good!
             </h1>
           </div>
 
-          {/* Photo Preview */}
-          <div className="mb-6">
-            <div className="bg-white border-4 border-black">
+          {/* Photo Preview - matching the image layout */}
+          <div className="mb-8">
+            <div className="bg-white border-4 border-black p-2">
               <img
                 src={capturedImage}
                 alt="Captured moment"
-                className="w-full h-64 object-cover rounded"
+                className="w-full h-80 object-cover"
               />
             </div>
           </div>
 
           {/* Caption Input */}
-          <div className="mb-4">
+          <div className="mb-6">
             <textarea
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
@@ -69,7 +103,7 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
           </div>
 
           {/* Location Input */}
-          <div className="mb-4">
+          <div className="mb-6">
             <div className="relative">
               <input
                 type="text"
@@ -80,7 +114,7 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
                   isFormComplete ? "border-green-500" : "border-black"
                 }`}
               />
-              <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+              <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                 <svg
                   width="16"
                   height="16"
@@ -100,25 +134,28 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
           </div>
 
           {/* Terms and Conditions */}
-          <div className="mb-6">
-            <label className="flex items-start space-x-2 text-sm text-gray-600">
+          <div className="mb-8">
+            <label className="flex items-start space-x-3 text-[14px] text-gray-600">
               <input
                 type="checkbox"
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
-                className="mt-1 rounded"
+                className="mt-1 w-4 h-4 rounded border-2 border-black"
               />
               <span>
                 By checking this button, you are agree for our{" "}
-                <a href="#" className="text-blue-600 underline">
-                  Terms and Agreement
-                </a>
+                <button
+                  onClick={handleTermsClick}
+                  className="text-blue-600 italic underline hover:text-blue-800 focus:outline-none"
+                >
+                  terms and agreement
+                </button>
               </span>
             </label>
           </div>
 
           {/* Save Button */}
-          <div className="mb-4 flex justify-center mt-10">
+          <div className="flex justify-center mb-8">
             <img
               src={isFormComplete ? "/shareon.png" : "/shareoff.png"}
               alt="Share button"
@@ -128,7 +165,12 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
                   ? "cursor-pointer hover:opacity-80"
                   : "cursor-not-allowed opacity-60"
               }`}
-            />
+            ></img>
+          </div>
+
+          {/* Footer */}
+          <div className="text-center text-[12px] text-gray-500 mt-auto">
+            Let This Book Be Your Public Space - 2025
           </div>
         </div>
       </div>

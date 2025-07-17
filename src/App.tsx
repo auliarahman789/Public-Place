@@ -13,12 +13,124 @@ import CaptureMomentPage from "./pages/Home/CaptureMomentPage";
 import CharacterSelectionPage from "./pages/Home/CharacterSelectionPage";
 import CameraPage from "./pages/Home/CameraPage";
 import PhotoPreviewPage from "./pages/Home/PhotoPreviewPage";
+import SuccessPage from "./pages/Home/SuccessPage";
+import TermsAndConditions from "./components/TermsAndConditions";
+import GalleryPage from "./pages/Home/GalleryPage";
+import DetailGalleryPage from "./pages/Home/DetailGalleryPage";
+
+// Gallery item interface
+interface GalleryItem {
+  id: number;
+  image: string;
+  character: string;
+  location: string;
+  caption: string;
+  mapLink: string;
+}
 
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
   const [selectedCharacter, setSelectedCharacter] = useState<string>("");
   const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [capturedImage, setCapturedImage] = useState<string>("");
+
+  // Gallery data - replace this with API call later
+  const [galleryData, setGalleryData] = useState<GalleryItem[]>([
+    {
+      id: 1,
+      image: "/images/gallery/image1.jpg",
+      character: "Artist",
+      location: "Museum",
+      caption: "An Artist in Nature Beauty",
+      mapLink: "https://maps.google.com/museum-location",
+    },
+    {
+      id: 2,
+      image: "/images/gallery/image2.jpg",
+      character: "Explorer",
+      location: "Mountain",
+      caption: "Mountain Adventure",
+      mapLink: "https://maps.google.com/mountain-location",
+    },
+    {
+      id: 3,
+      image: "/images/gallery/image3.jpg",
+      character: "Photographer",
+      location: "Beach",
+      caption: "Sunset at the Beach",
+      mapLink: "https://maps.google.com/beach-location",
+    },
+    {
+      id: 4,
+      image: "/images/gallery/image4.jpg",
+      character: "Artist",
+      location: "Park",
+      caption: "Nature's Canvas",
+      mapLink: "https://maps.google.com/park-location",
+    },
+    {
+      id: 5,
+      image: "/images/gallery/image5.jpg",
+      character: "Traveler",
+      location: "City",
+      caption: "Urban Exploration",
+      mapLink: "https://maps.google.com/city-location",
+    },
+    {
+      id: 6,
+      image: "/images/gallery/image6.jpg",
+      character: "Explorer",
+      location: "Forest",
+      caption: "Deep in the Woods",
+      mapLink: "https://maps.google.com/forest-location",
+    },
+    {
+      id: 7,
+      image: "/images/gallery/image7.jpg",
+      character: "Photographer",
+      location: "Museum",
+      caption: "Art Appreciation",
+      mapLink: "https://maps.google.com/museum-location-2",
+    },
+    {
+      id: 8,
+      image: "/images/gallery/image8.jpg",
+      character: "Artist",
+      location: "Beach",
+      caption: "Coastal Inspiration",
+      mapLink: "https://maps.google.com/beach-location-2",
+    },
+    {
+      id: 9,
+      image: "/images/gallery/image9.jpg",
+      character: "Traveler",
+      location: "Mountain",
+      caption: "Peak Experience",
+      mapLink: "https://maps.google.com/mountain-location-2",
+    },
+  ]);
+
+  // Function to fetch gallery data from API (implement later)
+  const fetchGalleryData = async () => {
+    try {
+      // Replace with actual API call
+      // const response = await fetch('/api/gallery');
+      // const data = await response.json();
+      // setGalleryData(data);
+    } catch (error) {
+      console.error("Error fetching gallery data:", error);
+    }
+  };
+
+  // Function to add new photo to gallery (implement later)
+  const addToGallery = (newPhoto: Omit<GalleryItem, "id">) => {
+    const newId = Math.max(...galleryData.map((item) => item.id), 0) + 1;
+    const newItem: GalleryItem = {
+      id: newId,
+      ...newPhoto,
+    };
+    setGalleryData((prev) => [...prev, newItem]);
+  };
 
   const handleNavigateToHome = () => {
     navigate("/");
@@ -48,6 +160,15 @@ const AppContent: React.FC = () => {
   };
 
   const handlePhotoSave = (caption: string, mapLink: string) => {
+    // Add photo to gallery data
+    addToGallery({
+      image: capturedImage,
+      character: selectedCharacter,
+      location: selectedLocation,
+      caption,
+      mapLink,
+    });
+
     // Here you would typically save the photo data to your backend
     console.log("Saving photo with:", {
       character: selectedCharacter,
@@ -56,12 +177,33 @@ const AppContent: React.FC = () => {
       caption,
       mapLink,
     });
-    alert("Photo saved successfully!");
-    navigate("/menu");
+
+    // Navigate to success page after successful save
+    navigate("/success");
   };
 
   const handleBackToMenu = () => {
     navigate("/menu");
+  };
+
+  const handleNavigateToCharacterSelection = () => {
+    // Reset state when going back to character selection
+    setSelectedCharacter("");
+    setSelectedLocation("");
+    setCapturedImage("");
+    navigate("/character-selection");
+  };
+
+  const handleViewGallery = () => {
+    navigate("/gallery");
+  };
+
+  const handleGalleryItemClick = (id: number) => {
+    navigate(`/detail-gallery/${id}`);
+  };
+
+  const handleBackToGallery = () => {
+    navigate("/gallery");
   };
 
   return (
@@ -151,7 +293,56 @@ const AppContent: React.FC = () => {
               selectedLocation={selectedLocation}
               capturedImage={capturedImage}
               onSave={handlePhotoSave}
+              onNavigateToCharacterSelection={
+                handleNavigateToCharacterSelection
+              }
             />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/success"
+        element={
+          <DefaultLayout headerTitle="Success" onBack={() => navigate("/menu")}>
+            <SuccessPage
+              onBack={() => navigate("/menu")}
+              onViewGallery={handleViewGallery}
+              capturedImage={capturedImage}
+            />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/gallery"
+        element={
+          <DefaultLayout headerTitle="Gallery" onBack={() => navigate("/menu")}>
+            <GalleryPage
+              onBack={() => navigate("/menu")}
+              galleryData={galleryData}
+              onItemClick={handleGalleryItemClick}
+            />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/detail-gallery/:id"
+        element={
+          <DefaultLayout headerTitle="Detail" onBack={handleBackToGallery}>
+            <DetailGalleryPage
+              onBack={handleBackToGallery}
+              galleryData={galleryData}
+              onNavigateToCharacterSelection={
+                handleNavigateToCharacterSelection
+              }
+            />
+          </DefaultLayout>
+        }
+      />
+      <Route
+        path="/termsandcondition"
+        element={
+          <DefaultLayout headerTitle="Terms and Conditions">
+            <TermsAndConditions onBack={() => navigate("/camera")} />
           </DefaultLayout>
         }
       />

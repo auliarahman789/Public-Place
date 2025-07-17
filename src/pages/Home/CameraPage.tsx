@@ -75,9 +75,10 @@ const CameraPage: React.FC<CameraPageProps> = ({ onPhotoCapture }) => {
                 CHOOSE FROM GALLERY
               </span>
             </button>
+            {/* Only show camera button on mobile devices */}
             <button
               onClick={openCamera}
-              className="w-full bg-white border-3 border-green-600 font-semibold py-6 px-6 text-[20px] hover:bg-green-50 transition-colors shadow-lg"
+              className="w-full bg-white border-3 border-green-600 font-semibold py-6 px-6 text-[20px] hover:bg-green-50 transition-colors shadow-lg block md:hidden"
             >
               <span
                 className="text-[#F9A574]"
