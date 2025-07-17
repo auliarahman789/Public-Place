@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 
 interface GalleryItem {
@@ -41,29 +41,30 @@ const DetailGalleryPage: React.FC<DetailGalleryPageProps> = ({
   return (
     <div className="min-h-screen bg-[#DAD5D2] font-bookmania">
       <div className="w-full max-w-lg mx-auto">
-        <div className="px-6 py-8">
+        <div className="px-6 py-10">
           {/* Main Image */}
-          <div className="mb-6">
-            <div className="bg-white border-4 border-black p-2">
+          <div className="mb-4">
+            <div className="bg-white border-4 border-black ">
               <img
                 src={item.image}
                 alt={item.caption}
-                className="w-full h-80 object-cover"
+                className="w-full h-[383px] object-cover"
               />
             </div>
           </div>
 
-          {/* Image Caption */}
-          <div className="text-center mb-6">
-            <h2 className="text-[18px] font-bold text-black underline mb-2">
-              {item.caption}
+          {/* Character in Location */}
+          <div className="text-center mb-4">
+            <h2 className="text-[20px] font-bold text-black mb-2">
+              <span className="underline">{item.character}</span> in{" "}
+              <span className="underline">{item.location}</span>
             </h2>
           </div>
 
-          {/* Character and Location Info */}
-          <div className="mb-6">
+          {/* Caption and Location Info */}
+          <div className="mb-6 px-5">
             <div className="bg-white border-2 border-green-500 p-3 mb-3">
-              <p className="text-[14px] text-gray-700">{item.character}</p>
+              <p className="text-[14px] text-gray-700">{item.caption}</p>
             </div>
             <div
               className="bg-white border-2 border-green-500 p-3 mb-3 cursor-pointer hover:bg-gray-50"
@@ -95,45 +96,23 @@ const DetailGalleryPage: React.FC<DetailGalleryPageProps> = ({
           </div>
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex justify-between items-center mb-8 px-[20%]">
             <button
               onClick={onBack}
-              className="flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+              className="hover:opacity-80 transition-opacity"
             >
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              Back
+              <img src="/BackButton.png" alt="Back" className="" />
             </button>
 
             <button
               onClick={onNavigateToCharacterSelection}
-              className="flex items-center px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+              className="hover:opacity-80 transition-opacity"
             >
-              Upload your Moment
-              <svg
-                className="w-4 h-4 ml-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              <img
+                src="/UploadMomentButton.png"
+                alt="Upload your Moment"
+                className=""
+              />
             </button>
           </div>
         </div>

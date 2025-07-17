@@ -16,7 +16,6 @@ interface GalleryPageProps {
 }
 
 const GalleryPage: React.FC<GalleryPageProps> = ({
-  onBack,
   galleryData,
   onItemClick,
 }) => {
@@ -63,14 +62,15 @@ const GalleryPage: React.FC<GalleryPageProps> = ({
 
           {/* Filter Section */}
           <div className="mb-6">
-            <p className="text-[16px] text-gray-700 mb-3">Filter by</p>
-            <div className="flex gap-2 mb-4">
+            <div className="flex items-center gap-4">
+              <p className="text-[16px] text-gray-700">Filter by</p>
+
               {/* Character Filter */}
               <div className="relative">
                 <select
                   value={selectedCharacterFilter}
                   onChange={(e) => handleCharacterFilter(e.target.value)}
-                  className="appearance-none bg-white border-2 border-gray-300 rounded-md px-4 py-2 pr-8 text-sm focus:outline-none focus:border-gray-500"
+                  className="appearance-none bg-white border-2 border-[#0FA44B] rounded-md px-4  pl-6 text-[8px] h-[22px] focus:outline-none focus:border-teal-500 w-[100px]"
                 >
                   <option value="All Character">All Character</option>
                   {uniqueCharacters.map((character) => (
@@ -79,18 +79,20 @@ const GalleryPage: React.FC<GalleryPageProps> = ({
                     </option>
                   ))}
                 </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <div className="absolute inset-y-0 top-1 left-0 flex items-center px-2 pointer-events-none">
                   <svg
-                    className="w-4 h-4 text-gray-400"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
                     fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
+                      d="M2.25 3.5H9.75M3.5 6H8.5M5 8.5H7"
+                      stroke="black"
+                      stroke-opacity="0.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
                     />
                   </svg>
                 </div>
@@ -101,27 +103,29 @@ const GalleryPage: React.FC<GalleryPageProps> = ({
                 <select
                   value={selectedLocationFilter}
                   onChange={(e) => handleLocationFilter(e.target.value)}
-                  className="appearance-none bg-white border-2 border-gray-300 rounded-md px-4 py-2 pr-8 text-sm focus:outline-none focus:border-gray-500"
+                  className="appearance-none bg-white border-2 border-[#0FA44B] rounded-md px-4  pl-6 text-[8px] h-[22px] focus:outline-none focus:border-teal-500 w-[90px]"
                 >
-                  <option value="All Place">All Place</option>
+                  <option value="All Place">All Places</option>
                   {uniqueLocations.map((location) => (
                     <option key={location} value={location}>
                       {location}
                     </option>
                   ))}
                 </select>
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <div className="absolute inset-y-0 top-1 left-0 flex items-center px-2 pointer-events-none">
                   <svg
-                    className="w-4 h-4 text-gray-400"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
                     fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
+                      d="M2.25 3.5H9.75M3.5 6H8.5M5 8.5H7"
+                      stroke="black"
+                      stroke-opacity="0.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
                     />
                   </svg>
                 </div>
