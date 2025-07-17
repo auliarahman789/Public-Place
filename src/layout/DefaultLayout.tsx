@@ -18,16 +18,32 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({
   showFooter = true,
 }) => {
   return (
-    <div className="dark:bg-boxdark-2 dark:text-bodydark min-h-screen relative">
-      {showHeader && (
-        <Header onBack={onBack} title={headerTitle} showBackButton={!!onBack} />
-      )}
+    <div
+      className="flex justify-center min-h-screen"
+      style={{
+        backgroundImage: "url('/bgdot.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundColor: "#60a5fa", // Fallback blue color
+      }}
+    >
+      {/* Mobile container - fixed width for all screen sizes */}
+      <div className="w-full max-w-[375px] min-h-screen flex flex-col">
+        {showHeader && (
+          <Header
+            onBack={onBack}
+            title={headerTitle}
+            showBackButton={!!onBack}
+          />
+        )}
 
-      <main>
-        <div className="">{children}</div>
-      </main>
+        <main className="flex-1">
+          <div className="">{children}</div>
+        </main>
 
-      {showFooter && <Footer />}
+        {showFooter && <Footer />}
+      </div>
     </div>
   );
 };

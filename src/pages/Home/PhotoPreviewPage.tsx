@@ -167,11 +167,6 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
               }`}
             ></img>
           </div>
-
-          {/* Footer */}
-          <div className="text-center text-[12px] text-gray-500 mt-auto">
-            Let This Book Be Your Public Space - 2025
-          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // or your routing library
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   onBack?: () => void;
@@ -9,7 +9,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   onBack,
-
+  title,
   showBackButton = true,
 }) => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <div
-      className="h-14 relative"
+      className="h-14 relative w-full"
       style={{
         backgroundImage: "url('/image 1.png')",
         backgroundSize: "cover",

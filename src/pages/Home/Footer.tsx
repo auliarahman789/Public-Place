@@ -1,8 +1,9 @@
+// Footer.tsx
 import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="absolute bottom-0.5 h-[53px] flex w-full justify-center items-center text-center bg-[#DAD5D2]">
+    <footer className="h-[53px] flex w-full justify-center items-center text-center bg-[#DAD5D2]">
       <p
         className="text-[10px]"
         style={{
