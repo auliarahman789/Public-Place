@@ -188,7 +188,11 @@ const AppContent: React.FC = () => {
       <Route
         path="/"
         element={
-          <DefaultLayout showHeader={false} showFooter={false}>
+          <DefaultLayout
+            showHeader={false}
+            showFooter={false}
+            usePageBackground={true}
+          >
             <HomePage />
           </DefaultLayout>
         }
