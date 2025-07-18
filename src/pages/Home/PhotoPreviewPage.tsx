@@ -57,8 +57,8 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
     onSave(caption, mapLink);
   };
 
-  const handleTermsClick = () => {
-    window.open("/terms-and-conditions", "_blank");
+  const openInNewTab = (url: any) => {
+    window.open(url, "_blank", "noreferrer");
   };
 
   // Don't render if required data is missing
@@ -145,7 +145,7 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
               <span>
                 By checking this button, you are agree for our{" "}
                 <button
-                  onClick={handleTermsClick}
+                  onClick={() => openInNewTab("/terms-and-conditions")}
                   className="text-blue-600 italic underline hover:text-blue-800 focus:outline-none"
                 >
                   terms and agreement
