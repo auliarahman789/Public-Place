@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 
 interface PhotoPreviewPageProps {
   onBack: () => void;
@@ -14,32 +14,32 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
   selectedCharacter,
   selectedLocation,
   onSave,
-  onNavigateToCharacterSelection,
+  // onNavigateToCharacterSelection,
 }) => {
   const [caption, setCaption] = useState("");
   const [mapLink, setMapLink] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
-  // Use ref to track if we've already shown the alert
-  const hasShownAlert = useRef(false);
+  // // Use ref to track if we've already shown the alert
+  // const hasShownAlert = useRef(false);
 
-  // Check if required data is present on component mount
-  useEffect(() => {
-    if (!selectedCharacter || !selectedLocation || !capturedImage) {
-      if (!hasShownAlert.current) {
-        hasShownAlert.current = true;
-        alert(
-          "Missing Character, Location, or Image. Please start from character selection."
-        );
-        onNavigateToCharacterSelection();
-      }
-    }
-  }, [
-    selectedCharacter,
-    selectedLocation,
-    capturedImage,
-    onNavigateToCharacterSelection,
-  ]);
+  // // Check if required data is present on component mount
+  // useEffect(() => {
+  //   if (!selectedCharacter || !selectedLocation || !capturedImage) {
+  //     if (!hasShownAlert.current) {
+  //       hasShownAlert.current = true;
+  //       alert(
+  //         "Missing Character, Location, or Image. Please start from character selection."
+  //       );
+  //       onNavigateToCharacterSelection();
+  //     }
+  //   }
+  // }, [
+  //   selectedCharacter,
+  //   selectedLocation,
+  //   capturedImage,
+  //   onNavigateToCharacterSelection,
+  // ]);
 
   // Check if form is complete
   const isFormComplete =
