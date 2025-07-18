@@ -328,7 +328,7 @@ const AppContent: React.FC = () => {
         }
       />
       <Route
-        path="/termsandcondition"
+        path="/terms-and-conditions"
         element={
           <DefaultLayout
             headerTitle="Terms and Condition"

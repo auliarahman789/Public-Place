@@ -58,7 +58,7 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
   };
 
   const handleTermsClick = () => {
-    window.open("/termsandcondition", "_blank");
+    window.open("/terms-and-conditions", "_blank");
   };
 
   // Don't render if required data is missing
