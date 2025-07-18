@@ -330,7 +330,10 @@ const AppContent: React.FC = () => {
       <Route
         path="/termsandcondition"
         element={
-          <DefaultLayout headerTitle="Terms and Conditions">
+          <DefaultLayout
+            headerTitle="Terms and Condition"
+            onBack={() => navigate("/menu")}
+          >
             <TermsAndConditions onBack={() => navigate("/camera")} />
           </DefaultLayout>
         }
