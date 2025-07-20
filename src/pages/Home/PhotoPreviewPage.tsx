@@ -45,18 +45,67 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
   const isFormComplete =
     caption.trim() !== "" && mapLink.trim() !== "" && agreedToTerms;
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!agreedToTerms) {
       alert("Please agree to the terms and conditions");
       return;
     }
+
     if (!caption.trim() || !mapLink.trim()) {
       alert("Please fill in all fields");
       return;
     }
-    onSave(caption, mapLink);
+
+    try {
+      // Upload the image to /api/images
+      const blob = await fetch(capturedImage).then((res) => res.blob());
+      const formData = new FormData();
+      const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
+      formData.append("file", file); // harus 'file' sesuai backend
+
+      const uploadRes = await fetch(`${import.meta.env.VITE_API_BASE}/api/images`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!uploadRes.ok) {
+        throw new Error("Failed to upload image");
+      }
+
+      // safely parse JSON only if there's a body
+      const uploadJson = await uploadRes.json();
+      const uploadedFilename = uploadJson.filename;
+
+      // Save to /api/gallery
+      const saveRes = await fetch(`${import.meta.env.VITE_API_BASE}/api/gallery`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          character: selectedCharacter,
+          place: selectedLocation,
+          image_url: uploadedFilename,
+          caption,
+          maps_url: mapLink,
+        }),
+      });
+
+      if (!saveRes.ok) {
+        throw new Error("Failed to save gallery");
+      }
+
+      alert("Upload success!");
+      onSave(caption, mapLink);
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("Failed to upload or save photo. Please try again.");
+    }
   };
 
+
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const openInNewTab = (url: any) => {
     window.open(url, "_blank", "noreferrer");
   };
@@ -95,9 +144,8 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               placeholder="Add a caption..."
-              className={`w-full p-3 border-4 text-[16px] font-bookmania resize-none h-20 ${
-                isFormComplete ? "border-green-500" : "border-black"
-              }`}
+              className={`w-full p-3 border-4 text-[16px] font-bookmania resize-none h-20 ${isFormComplete ? "border-green-500" : "border-black"
+                }`}
               maxLength={200}
             />
           </div>
@@ -110,9 +158,8 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
                 value={mapLink}
                 onChange={(e) => setMapLink(e.target.value)}
                 placeholder="Paste your pin point from maps here"
-                className={`w-full p-3 border-4 text-[16px] font-bookmania pl-10 ${
-                  isFormComplete ? "border-green-500" : "border-black"
-                }`}
+                className={`w-full p-3 border-4 text-[16px] font-bookmania pl-10 ${isFormComplete ? "border-green-500" : "border-black"
+                  }`}
               />
               <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                 <svg
@@ -160,11 +207,10 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
               src={isFormComplete ? "/shareon.png" : "/shareoff.png"}
               alt="Share button"
               onClick={isFormComplete ? handleSave : undefined}
-              className={`w-[150px] h-[60px] cursor-pointer transition-opacity ${
-                isFormComplete
-                  ? "cursor-pointer hover:opacity-80"
-                  : "cursor-not-allowed opacity-60"
-              }`}
+              className={`w-[150px] h-[60px] cursor-pointer transition-opacity ${isFormComplete
+                ? "cursor-pointer hover:opacity-80"
+                : "cursor-not-allowed opacity-60"
+                }`}
             ></img>
           </div>
         </div>

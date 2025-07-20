@@ -20,14 +20,14 @@ import GalleryPage from "./pages/Home/GalleryPage";
 import DetailGalleryPage from "./pages/Home/DetailGalleryPage";
 
 // Gallery item interface
-interface GalleryItem {
-  id: number;
-  image: string;
-  character: string;
-  location: string;
-  caption: string;
-  mapLink: string;
-}
+// interface GalleryItem {
+//   id: number;
+//   image: string;
+//   character: string;
+//   location: string;
+//   caption: string;
+//   mapLink: string;
+// }
 
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
@@ -36,56 +36,7 @@ const AppContent: React.FC = () => {
   const [capturedImage, setCapturedImage] = useState<string>("");
 
   // Gallery data - replace this with API call later
-  const [galleryData, setGalleryData] = useState<GalleryItem[]>([
-    {
-      id: 1,
-      image: "/image1.png",
-      character: "A Daddy",
-      location: "Cultural / Art Space",
-      caption: "An Artist in Nature Beauty",
-      mapLink: "https://maps.google.com/museum-location",
-    },
-    {
-      id: 2,
-      image: "/image2.png",
-      character: "A DJ",
-      location: "Public Park",
-      caption: "Mountain Adventure",
-      mapLink: "https://maps.google.com/mountain-location",
-    },
-    {
-      id: 3,
-      image: "/image3.png",
-      character: "A Sporty Person",
-      location: "Beach",
-      caption: "Public Library",
-      mapLink: "https://maps.google.com/beach-location",
-    },
-    {
-      id: 4,
-      image: "/image4.png",
-      character: "An Entity",
-      location: "Traditional Market",
-      caption: "Nature's Canvas",
-      mapLink: "https://maps.google.com/park-location",
-    },
-    {
-      id: 5,
-      image: "/image5.png",
-      character: "An Artist",
-      location: "Cultural / Art Space",
-      caption: "Urban Exploration",
-      mapLink: "https://maps.google.com/city-location",
-    },
-    {
-      id: 6,
-      image: "/image6.png",
-      character: "An Artist",
-      location: "Cultural / Art Space",
-      caption: "Deep in the Woods",
-      mapLink: "https://maps.google.com/forest-location",
-    },
-  ]);
+  //const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
 
   // Function to fetch gallery data from API (implement later)
   // const fetchGalleryData = async () => {
@@ -100,14 +51,14 @@ const AppContent: React.FC = () => {
   // };
 
   // Function to add new photo to gallery (implement later)
-  const addToGallery = (newPhoto: Omit<GalleryItem, "id">) => {
-    const newId = Math.max(...galleryData.map((item) => item.id), 0) + 1;
-    const newItem: GalleryItem = {
-      id: newId,
-      ...newPhoto,
-    };
-    setGalleryData((prev) => [...prev, newItem]);
-  };
+  // const addToGallery = (newPhoto: Omit<GalleryItem, "id">) => {
+  //   const newId = Math.max(...galleryData.map((item) => item.id), 0) + 1;
+  //   const newItem: GalleryItem = {
+  //     id: newId,
+  //     ...newPhoto,
+  //   };
+  //   setGalleryData((prev) => [...prev, newItem]);
+  // };
 
   const handleNavigateToHome = () => {
     navigate("/");
@@ -136,28 +87,55 @@ const AppContent: React.FC = () => {
     navigate("/photo-preview");
   };
 
-  const handlePhotoSave = (caption: string, mapLink: string) => {
-    // Add photo to gallery data
-    addToGallery({
-      image: capturedImage,
-      character: selectedCharacter,
-      location: selectedLocation,
-      caption,
-      mapLink,
-    });
+  const handlePhotoSave = async (caption: string, mapLink: string) => {
+    try {
+      // 1. Convert base64 image to File
+      const blob = await (await fetch(capturedImage)).blob();
+      const file = new File([blob], "photo.jpg", { type: blob.type });
 
-    // Here you would typically save the photo data to your backend
-    console.log("Saving photo with:", {
-      character: selectedCharacter,
-      location: selectedLocation,
-      image: capturedImage,
-      caption,
-      mapLink,
-    });
+      // 2. Upload image to backend
+      const formData = new FormData();
+      formData.append("file", file);
 
-    // Navigate to success page after successful save
-    navigate("/success");
+      const uploadRes = await fetch(`${import.meta.env.VITE_API_BASE}/api/images`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!uploadRes.ok) throw new Error("Upload failed");
+
+      const uploadData = await uploadRes.json();
+      const filename = uploadData.filename;
+
+      // 3. Save gallery data
+      const galleryRes = await fetch(`${import.meta.env.VITE_API_BASE}/api/gallery`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          character: selectedCharacter,
+          place: selectedLocation,
+          image_url: filename,
+          caption,
+          maps_url: mapLink,
+        }),
+      });
+
+      if (!galleryRes.ok) throw new Error("Gallery save failed");
+
+      // 4. (Optional) Update local state from backend
+      // const freshData = await fetchGalleryData();
+      // setGalleryData(freshData);
+
+      // 5. Navigate to success page
+      navigate("/success");
+    } catch (error) {
+      console.error("Error during photo save:", error);
+      alert("Failed to upload or save photo. Please try again.");
+    }
   };
+
 
   const handleBackToMenu = () => {
     navigate("/menu");
@@ -307,26 +285,24 @@ const AppContent: React.FC = () => {
           <DefaultLayout headerTitle="Gallery" onBack={() => navigate("/menu")}>
             <GalleryPage
               onBack={() => navigate("/menu")}
-              galleryData={galleryData}
               onItemClick={handleGalleryItemClick}
             />
           </DefaultLayout>
         }
       />
+
       <Route
         path="/detail-gallery/:id"
         element={
           <DefaultLayout headerTitle="Detail" onBack={handleBackToGallery}>
             <DetailGalleryPage
               onBack={handleBackToGallery}
-              galleryData={galleryData}
-              onNavigateToCharacterSelection={
-                handleNavigateToCharacterSelection
-              }
+              onNavigateToCharacterSelection={handleNavigateToCharacterSelection}
             />
           </DefaultLayout>
         }
       />
+
       <Route
         path="/terms-and-conditions"
         element={
