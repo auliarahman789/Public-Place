@@ -30,6 +30,7 @@ const DetailGalleryPage: React.FC<DetailGalleryPageProps> = ({
         const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/gallery/${id}`);
         const json = await res.json();
         setItem(json.data);
+        console.log(json.data);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
         setError("Failed to fetch gallery item.");

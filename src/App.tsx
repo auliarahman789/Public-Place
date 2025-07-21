@@ -87,55 +87,6 @@ const AppContent: React.FC = () => {
     navigate("/photo-preview");
   };
 
-  const handlePhotoSave = async (caption: string, mapLink: string) => {
-    try {
-      // 1. Convert base64 image to File
-      const blob = await (await fetch(capturedImage)).blob();
-      const file = new File([blob], "photo.jpg", { type: blob.type });
-
-      // 2. Upload image to backend
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const uploadRes = await fetch(`${import.meta.env.VITE_API_BASE}/api/images`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!uploadRes.ok) throw new Error("Upload failed");
-
-      const uploadData = await uploadRes.json();
-      const filename = uploadData.filename;
-
-      // 3. Save gallery data
-      const galleryRes = await fetch(`${import.meta.env.VITE_API_BASE}/api/gallery`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          character: selectedCharacter,
-          place: selectedLocation,
-          image_url: filename,
-          caption,
-          maps_url: mapLink,
-        }),
-      });
-
-      if (!galleryRes.ok) throw new Error("Gallery save failed");
-
-      // 4. (Optional) Update local state from backend
-      // const freshData = await fetchGalleryData();
-      // setGalleryData(freshData);
-
-      // 5. Navigate to success page
-      navigate("/success");
-    } catch (error) {
-      console.error("Error during photo save:", error);
-      alert("Failed to upload or save photo. Please try again.");
-    }
-  };
-
 
   const handleBackToMenu = () => {
     navigate("/menu");
@@ -259,7 +210,7 @@ const AppContent: React.FC = () => {
               selectedCharacter={selectedCharacter}
               selectedLocation={selectedLocation}
               capturedImage={capturedImage}
-              onSave={handlePhotoSave}
+              onSave={() => navigate("/success")}
               onNavigateToCharacterSelection={
                 handleNavigateToCharacterSelection
               }
