@@ -63,6 +63,24 @@ const DetailGalleryPage: React.FC<DetailGalleryPageProps> = ({
     );
   }
 
+  const characters = [
+    {
+      id: "content-creator",
+      name: "A Content Creator",
+      image: "/A Content Creator.png",
+    },
+    { id: "daddy", name: "A Daddy", image: "/A Daddy.png" },
+    { id: "dj", name: "A DJ", image: "/A DJ.png" },
+    {
+      id: "sporty-person",
+      name: "A Sporty Person",
+      image: "/A Sporty Person.png",
+    },
+    { id: "artist", name: "An Artist", image: "/An Artist.png" },
+    { id: "entity", name: "An Entity", image: "/An Entity.png" },
+  ];
+  const characterName = characters.find(i => i.id == item.character)
+
   return (
     <div className="min-h-screen bg-[#DAD5D2] font-bookmania">
       <div className="w-full max-w-lg mx-auto px-6 py-10">
@@ -80,7 +98,7 @@ const DetailGalleryPage: React.FC<DetailGalleryPageProps> = ({
         {/* Character in Place */}
         <div className="text-center mb-4">
           <h2 className="text-[20px] font-bold text-black mb-2">
-            <span className="underline">{item.character}</span> in{" "}
+            <span className="underline">{characterName?.name}</span> in{" "}
             <span className="underline">{item.place}</span>
           </h2>
         </div>
@@ -114,7 +132,7 @@ const DetailGalleryPage: React.FC<DetailGalleryPageProps> = ({
                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              <span>{item.maps_url}</span>
+              <span className="break-all">{item.maps_url}</span>
             </div>
           </div>
         </div>
