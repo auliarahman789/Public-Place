@@ -51,7 +51,7 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
           {/* View Gallery Button */}
           <div className="flex justify-center mb-8">
             <img
-              src="/gallery.png"
+              src="/viewGallery.svg"
               alt="View Gallery"
               onClick={onViewGallery}
               className="w-[150px] h-[60px] cursor-pointer transition-opacity"

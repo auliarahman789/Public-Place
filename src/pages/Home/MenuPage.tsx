@@ -8,65 +8,53 @@ interface MenuPageProps {
 const MenuPage: React.FC<MenuPageProps> = ({ onNavigate }) => {
   return (
     <div className="flex-1 min-h-[calc(100vh-56px)]">
-      <div className="w-full max-w-sm mx-auto px-6 py-8 font-bookmania">
-        <div className="space-y-4">
+      <div className="w-full max-w-sm mx-auto px-6 py-16 font-bookmania justify-center flex flex-col items-center">
+        <div className="space-y-4 flex flex-col items-center w-full">
           <button
             onClick={() => onNavigate("about")}
-            className="w-full bg-white border-3 border-green-600 font-semibold py-4 px-6 text-[24px] hover:bg-green-50 transition-colors"
+            className="w-full max-w-[280px] block"
           >
-            <span
-              className="text-[#F9A574]"
-              style={{
-                textShadow:
-                  "1px 1px 0 #666, -1px -1px 0 #666, 1px -1px 0 #666, -1px 1px 0 #666",
-              }}
-            >
-              ABOUT
-            </span>
+            <img
+              src="/ButtonAbout.svg"
+              alt="ABOUT"
+              className="w-full h-auto object-contain"
+            />
           </button>
 
           <button
             onClick={() => onNavigate("gallery")}
-            className="w-full bg-white border-3 border-green-600 font-semibold py-4 px-6 text-[24px] hover:bg-green-50 transition-colors"
+            className="w-full max-w-[280px] block"
           >
-            <span
-              className="text-[#F9A574]"
-              style={{
-                textShadow:
-                  "1px 1px 0 #666, -1px -1px 0 #666, 1px -1px 0 #666, -1px 1px 0 #666",
-              }}
-            >
-              GALLERY
-            </span>
+            <img
+              src="/ButtonGallery.svg"
+              alt="GALLERY"
+              className="w-full h-auto object-contain"
+            />
           </button>
 
           <button
             onClick={() => onNavigate("book")}
-            className="w-full bg-white border-3 border-green-600 font-semibold py-4 px-6 text-[24px] hover:bg-green-50 transition-colors"
+            className="w-full max-w-[280px] block"
           >
-            <span
-              className="text-[#F9A574]"
-              style={{
-                textShadow:
-                  "1px 1px 0 #666, -1px -1px 0 #666, 1px -1px 0 #666, -1px 1px 0 #666",
-              }}
-            >
-              SEE THE BOOK
-            </span>
+            <img
+              src="/ButtonSeebook.svg"
+              alt="SEE THE BOOK"
+              className="w-full h-auto object-contain"
+            />
           </button>
         </div>
 
         {/* Capture Moment section */}
-        <div className="mt-12 text-center max-w-sm">
-          <div className="relative inline-block">
+        <div className="mt-12 text-center w-full max-w-sm">
+          <div className="relative inline-block w-full">
             <button
               onClick={() => onNavigate("capture-moment")}
-              className="block w-full hover:opacity-80 transition-opacity"
+              className="block w-full max-w-[280px] mx-auto hover:opacity-80 transition-opacity"
             >
               <img
-                src="/moment1.png"
+                src="/CaptureMoment.svg"
                 alt="Let This Book Be Your Public Space"
-                className="w-80 h-[209px] mx-auto"
+                className="w-full h-auto object-contain mx-auto"
               />
             </button>
           </div>

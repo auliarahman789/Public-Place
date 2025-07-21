@@ -27,7 +27,9 @@ const DetailGalleryPage: React.FC<DetailGalleryPageProps> = ({
   useEffect(() => {
     const fetchGalleryItem = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/gallery/${id}`);
+        const res = await fetch(
+          `${import.meta.env.VITE_API_BASE}/api/gallery/${id}`
+        );
         const json = await res.json();
         setItem(json.data);
         console.log(json.data);
@@ -79,7 +81,7 @@ const DetailGalleryPage: React.FC<DetailGalleryPageProps> = ({
     { id: "artist", name: "An Artist", image: "/An Artist.png" },
     { id: "entity", name: "An Entity", image: "/An Entity.png" },
   ];
-  const characterName = characters.find(i => i.id == item.character)
+  const characterName = characters.find((i) => i.id == item.character);
 
   return (
     <div className="min-h-screen bg-[#DAD5D2] font-bookmania">
@@ -143,14 +145,14 @@ const DetailGalleryPage: React.FC<DetailGalleryPageProps> = ({
             onClick={onBack}
             className="hover:opacity-80 transition-opacity"
           >
-            <img src="/BackButton.png" alt="Back" />
+            <img src="/back.svg" alt="Back" />
           </button>
 
           <button
             onClick={onNavigateToCharacterSelection}
             className="hover:opacity-80 transition-opacity"
           >
-            <img src="/UploadMomentButton.png" alt="Upload your Moment" />
+            <img src="/upload.svg" alt="Upload your Moment" />
           </button>
         </div>
       </div>
