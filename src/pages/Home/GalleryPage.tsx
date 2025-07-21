@@ -19,7 +19,7 @@ const GalleryPage: React.FC<GalleryPageProps> = ({ onItemClick }) => {
   const [selectedCharacterFilter, setSelectedCharacterFilter] = useState("All Character");
   const [selectedLocationFilter, setSelectedLocationFilter] = useState("All Place");
   const [page, setPage] = useState(1);
-  const [limit] = useState(9);
+  const [limit] = useState(25);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   // Static data untuk dropdown options
