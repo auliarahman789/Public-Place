@@ -7,11 +7,7 @@ interface HeaderProps {
   showBackButton?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  onBack,
-
-  showBackButton = true,
-}) => {
+const Header: React.FC<HeaderProps> = ({ onBack, showBackButton = true }) => {
   const navigate = useNavigate();
 
   const handleTitleClick = () => {
@@ -20,12 +16,14 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <div
-      className="h-14 relative w-full"
+      className=" relative w-full"
       style={{
-        backgroundImage: "url('/image 1.png')",
+        backgroundImage: "url('/image 3.svg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+
+        minHeight: "56px", // Ensure minimum height
       }}
     >
       {showBackButton && (
@@ -42,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="absolute top-4 right-4">
         <button
           onClick={handleTitleClick}
-          className="font-semibold text-sm font-bookmania text-[#F9A574] hover:text-[#E8945F] transition-colors duration-200 cursor-pointer"
+          className="font-semibold text-[10px] font-bookmania text-[#F9A574] hover:text-[#E8945F] transition-colors duration-200 cursor-pointer"
           style={{
             textShadow:
               "0.5px 0.5px 0 #666, -0.5px -0.5px 0 #666, 0.5px -0.5px 0 #666, -0.5px 0.5px 0 #666",
