@@ -75,7 +75,7 @@ const AboutPage: React.FC<AboutPageProps> = ({}) => {
                 className="inline-block"
               >
                 <img
-                  src="/igExport.png"
+                  src="/igagus.svg"
                   alt="Instagram"
                   className="w-24 mx-auto cursor-pointer hover:opacity-80 transition-opacity"
                   style={{ objectFit: "contain" }}

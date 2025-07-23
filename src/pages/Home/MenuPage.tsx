@@ -9,7 +9,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ onNavigate }) => {
   return (
     <div className="flex-1 min-h-[calc(100vh-56px)]">
       <div className="w-full max-w-sm mx-auto px-6 py-16 font-bookmania justify-center flex flex-col items-center">
-        <div className="space-y-4 flex flex-col items-center w-full">
+        <div className="space-y-[20px] flex flex-col items-center w-full">
           <button
             onClick={() => onNavigate("about")}
             className="w-full max-w-[280px] block"
@@ -45,23 +45,23 @@ const MenuPage: React.FC<MenuPageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Capture Moment section */}
-        <div className="mt-12 text-center w-full max-w-sm">
+        <div className="mt-[20px] text-center ">
           <div className="relative inline-block w-full">
             <button
               onClick={() => onNavigate("capture-moment")}
-              className="block w-full max-w-[280px] mx-auto hover:opacity-80 transition-opacity"
+              className="block  mx-auto "
             >
               <img
-                src="/CaptureMoment.svg"
+                src="/Capture Moment 1.svg"
                 alt="Let This Book Be Your Public Space"
-                className="w-full h-auto object-contain mx-auto"
+                className="w-full h-auto  mx-auto"
               />
             </button>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="mt-16 text-center text-xs text-gray-500">
+        <div className="mt-[23px] text-center text-xs text-gray-500">
           <p
             className="text-[16px] text-black"
             style={{
