@@ -67,7 +67,7 @@ const CaptureMomentPage: React.FC<CaptureMomentPageProps> = ({
                 onClick={() => handleLocationClick(location.name)}
                 className="bg-[#DAD5D2] hover:border-green-600 transition-colors"
               >
-                <div className="aspect-square mb-2 bg-gray-100 flex items-center justify-center">
+                <div className="aspect-square mb-2  flex items-center justify-center">
                   <img
                     src={location.image}
                     alt={location.name}
