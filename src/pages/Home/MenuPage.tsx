@@ -54,7 +54,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ onNavigate }) => {
               <img
                 src="/Capture Moment.png"
                 alt="Let This Book Be Your Public Space"
-                className="w-full h-auto  mx-auto"
+                className="w-[270px] h-[209px]  mx-auto"
               />
             </button>
           </div>
