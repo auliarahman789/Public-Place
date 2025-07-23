@@ -52,7 +52,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ onNavigate }) => {
               className="block  mx-auto "
             >
               <img
-                src="/Capture Moment 1.svg"
+                src="/Capture Moment.png"
                 alt="Let This Book Be Your Public Space"
                 className="w-full h-auto  mx-auto"
               />
