@@ -72,7 +72,7 @@ const HomePage: React.FC = () => {
           className={`${isMobile ? "hidden" : "text-center"} font-bookmania`}
         >
           <p className="text-[14px] mt-[62px]">
-            Let This Book Be Your Public Space - 2025
+            “For a better experience, access this website from your phone.”
           </p>
         </div>
       </div>
