@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
 
@@ -18,7 +18,24 @@ const HomePage: React.FC = () => {
   if (isLoading) {
     return <LoadingScreen onLoadingComplete={handleLoadingComplete} />;
   }
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const checkIsMobile = () => {
+      const userAgent = navigator.userAgent;
+      const mobileKeywords =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+      const isMobileDevice = mobileKeywords.test(userAgent);
+      const isSmallScreen = window.innerWidth <= 768;
+
+      setIsMobile(isMobileDevice || isSmallScreen);
+    };
+
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
@@ -49,6 +66,14 @@ const HomePage: React.FC = () => {
           >
             Start Exploring
           </button>
+        </div>
+
+        <div
+          className={`${isMobile ? "hidden" : "text-center"} font-bookmania`}
+        >
+          <p className="text-[14px] mt-[62px]">
+            Let This Book Be Your Public Space - 2025
+          </p>
         </div>
       </div>
 
