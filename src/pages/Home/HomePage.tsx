@@ -4,22 +4,8 @@ import LoadingScreen from "./LoadingScreen";
 
 const HomePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-
-  const handleStartExploring = () => {
-    setIsLoading(true);
-  };
-
-  const handleLoadingComplete = () => {
-    setIsLoading(false);
-    navigate("/menu");
-  };
-
-  if (isLoading) {
-    return <LoadingScreen onLoadingComplete={handleLoadingComplete} />;
-  }
   const [isMobile, setIsMobile] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const checkIsMobile = () => {
       const userAgent = navigator.userAgent;
@@ -36,6 +22,19 @@ const HomePage: React.FC = () => {
 
     return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
+  const handleStartExploring = () => {
+    setIsLoading(true);
+  };
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+    navigate("/menu");
+  };
+
+  if (isLoading) {
+    return <LoadingScreen onLoadingComplete={handleLoadingComplete} />;
+  }
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
