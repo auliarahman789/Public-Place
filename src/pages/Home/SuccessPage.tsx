@@ -24,7 +24,7 @@ const SuccessPage: React.FC<SuccessPageProps> = ({
 
           {/* Photo Preview - matching the image layout */}
           <div className="mb-8">
-            <div className="bg-white border-4 border-black p-2">
+            <div className="bg-white border-4 border-black ">
               <img
                 src={capturedImage}
                 alt="Captured moment"

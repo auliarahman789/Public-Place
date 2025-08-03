@@ -19,6 +19,7 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
   const [caption, setCaption] = useState("");
   const [mapLink, setMapLink] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [isUploading, setIsUploading] = useState(false); // Add loading state
 
   // Use ref to track if we've already shown the alert
   const hasShownAlert = useRef(false);
@@ -41,11 +42,17 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
     onNavigateToCharacterSelection,
   ]);
 
-  // Check if form is complete
+  // Check if form is complete and not currently uploading
   const isFormComplete =
-    caption.trim() !== "" && mapLink.trim() !== "" && agreedToTerms;
+    caption.trim() !== "" &&
+    mapLink.trim() !== "" &&
+    agreedToTerms &&
+    !isUploading;
 
   const handleSave = async () => {
+    // Prevent multiple clicks
+    if (isUploading) return;
+
     if (!agreedToTerms) {
       alert("Please agree to the terms and conditions");
       return;
@@ -55,6 +62,8 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
       alert("Please fill in all fields");
       return;
     }
+
+    setIsUploading(true); // Set loading state
 
     try {
       // Upload the image to /api/images
@@ -106,6 +115,8 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
     } catch (error) {
       console.error("Upload error:", error);
       alert("Failed to upload or save photo. Please try again.");
+    } finally {
+      setIsUploading(false); // Reset loading state
     }
   };
 
@@ -152,6 +163,7 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
                 isFormComplete ? "border-green-500" : "border-black"
               }`}
               maxLength={200}
+              disabled={isUploading} // Disable input during upload
             />
           </div>
 
@@ -166,6 +178,7 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
                 className={`w-full p-3 border-4 text-[16px] font-bookmania pl-10 ${
                   isFormComplete ? "border-green-500" : "border-black"
                 }`}
+                disabled={isUploading} // Disable input during upload
               />
               <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                 <svg
@@ -194,12 +207,14 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
                 checked={agreedToTerms}
                 onChange={(e) => setAgreedToTerms(e.target.checked)}
                 className="mt-1 w-4 h-4 rounded border-2 border-black"
+                disabled={isUploading} // Disable checkbox during upload
               />
               <span>
                 By checking this button, you are agree for our{" "}
                 <button
                   onClick={() => openInNewTab("/terms-and-conditions")}
                   className="text-blue-600 italic underline hover:text-blue-800 focus:outline-none"
+                  disabled={isUploading} // Disable link during upload
                 >
                   terms and agreement
                 </button>
@@ -210,15 +225,27 @@ const PhotoPreviewPage: React.FC<PhotoPreviewPageProps> = ({
           {/* Save Button */}
           <div className="flex justify-center mb-8">
             <img
-              src={isFormComplete ? "/shareOn.svg" : "/shareOff.svg"}
+              src={
+                isUploading
+                  ? "/shareOff.svg" // Show disabled state while uploading
+                  : isFormComplete
+                  ? "/shareOn.svg"
+                  : "/shareOff.svg"
+              }
               alt="Share button"
-              onClick={isFormComplete ? handleSave : undefined}
-              className={` cursor-pointer transition-opacity ${
-                isFormComplete
+              onClick={isFormComplete && !isUploading ? handleSave : undefined}
+              className={`cursor-pointer transition-opacity ${
+                isFormComplete && !isUploading
                   ? "cursor-pointer hover:opacity-80"
                   : "cursor-not-allowed opacity-60"
               }`}
-            ></img>
+            />
+            {/* Optional: Add loading text */}
+            {isUploading && (
+              <div className="absolute mt-16 text-center">
+                <p className="text-sm text-gray-600">Uploading...</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
